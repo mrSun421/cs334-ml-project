@@ -1,5 +1,11 @@
 \documentclass[../proposal.tex]{subfiles}
 
 \begin{document}
+In our project, we aim to address the open problem of optical character recognition. More specfically, we want to address the open problem of converting handwritten mathematical expressions into LaTeX. To do so, we use ICDAR's 2023 Competition on Recognition of Handwritten Mathematical Expressions (CHROME) dataset. While the problem seems simple, it has several components. Based on the work of Sakshi and Kukreja, there are five main areas of challenges with current approaches: preprocessing, Input/Output formats and representations, Recongnition model challenges, Compartive analysis and performance evaluation, and Hardware challenges. Based on the content of the class, we can ignore challenges pertaining to hardware, and Input/ Output formats and representation.
+
+
+
+
+First, the data must be processed into the desired format. For our purposes, the data set aside for task two (offline recognition), which includes rendered inkml files, scanned images, and images from the Offline Recognition and Spotting of Handwritten Mathematical Expressions (OFFRaSHME dataset), will suffice because the problem of realtime recognition (online regonition) seems unsuitable for the content learned in the course. Second, the features must be extracted. This is especially pertinent in approaches that want to convert expressions within a larger text CITE FIRST TAB (A DL BASED SYSTEM FOR MATHEMATICAL EXPRESSION....). But, based on the dataset we have chosen, we will not address this problem since it only contains the mathematical expressions in isolation. Third, 
 
 \end{document}
