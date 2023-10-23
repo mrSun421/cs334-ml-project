@@ -2,6 +2,7 @@
 
 \usepackage{fancyhdr}
 \usepackage{bootabs}
+\usepackage{subfiles}
 
 \pagestyle{fancy}
 \fancyhf{}
@@ -31,9 +32,15 @@
 
 \vspace{0.4cm}
 
-\begin{enumerate}
-	\item 
-\end{enumerate}
+\section{Introduction}
+\subfile{./sections/Introduction}
+
+\section{Dataset}
+\subfile{./sections/Dataset}
+
+\section{Model}
+\subfile{./sections/Model}
+
 
 \end{document}
 
