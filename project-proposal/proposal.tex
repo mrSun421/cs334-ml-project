@@ -3,7 +3,9 @@
 \usepackage{fancyhdr}
 \usepackage{booktabs}
 \usepackage{subfiles}
-
+\usepackage{biblatex}
+\usepackage{hyperref}
+\addbibresource{references.bib}
 \pagestyle{fancy}
 \fancyhf{}
 
@@ -15,9 +17,9 @@
 
 \thispagestyle{empty}
 
-\begin{tabular}{p{10.5cm}} 
+\begin{tabular}{p{10.5cm}}
 	{\large \bf CS 334: Machine Learning} \\
-	Emory University\\ Fall 2023  \\ Aadi Waghray and Joshua Sun\\
+	Emory University                      \\ Fall 2023  \\ Aadi Waghray and Joshua Sun\\
 	\bottomrule
 	\\
 \end{tabular}
@@ -25,22 +27,25 @@
 \vspace*{0.3cm}
 
 \begin{center}
-	{\Large \bf Project Proposal}\\
+	{\Large \bf Project Proposal: Converting Handwritten Math to \LaTeX, 2023 Edition}\\
 	\vspace*{0.02cm}
 	{\bf Aadi Waghray and Joshua Sun}
 \end{center}
 
 \vspace{0.4cm}
 
-\section{Introduction}
+\section*{Introduction}
 \subfile{section/Introduction}
 
-\section{Dataset}
+\section*{Dataset}
 \subfile{section/Dataset}
 
-\section{Model}
+\section*{Model}
 \subfile{section/Model}
 
+\newpage
+\nocite{*}
+\printbibliography
 
 \end{document}
 
