@@ -22,6 +22,7 @@ def main():
                               'SOLARAD_FLAG',
                               'SOLARAD_MAX_FLAG',
                               'SOLARAD_MIN_FLAG',
+                              'SUR_TEMP_TYPE',
                               'SUR_TEMP_FLAG',
                               'SUR_TEMP_MAX_FLAG',
                               'SUR_TEMP_MIN_FLAG',
