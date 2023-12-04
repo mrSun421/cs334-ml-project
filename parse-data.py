@@ -16,12 +16,10 @@ def main():
             df.to_csv(csv_path)
     """
             
-    data = None
-    for filepath in dataset_dir.glob("**/*.csv"):
-        if data is None:
-            data = pd.read_csv(filepath)
-        else:
-            data = pd.concat([data, pd.read_csv(filepath)])
+
+    filepaths = dataset_dir.glob("**/*.csv")
+    data = pd.concat(map(pd.read_csv, filepaths))
+
 
     data.to_csv("./Dataset_2023.csv")
 
