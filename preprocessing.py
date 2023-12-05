@@ -37,10 +37,11 @@ def main():
     to_drop = [column for column in cor.columns if any(cor[column] > correlation_cutoff)]
     # data = data.drop(to_drop, axis=1)
 
-    data = data.to_numpy()
-    print(data)
-    data = prepros.normalize(data)
-    data = pd.concat(data, label) 
+    data_values = data.values #returns a numpy array
+    min_max_scaler = prepros.MinMaxScaler()
+    data_values = min_max_scaler.fit_transform(data_values)
+    data = pd.DataFrame(data_values)
+    data.insert(0, "PERCIP", label, True)
 
     data.to_csv("./Dataset_2023_Processed.csv")
     
