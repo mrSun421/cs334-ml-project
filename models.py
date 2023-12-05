@@ -2,18 +2,24 @@ import numpy as np
 import pandas as pd
 from sklearn import tree, svm, linear_model, model_selection, metrics
 
-def model_training_eval(model, data):
-    model.fit(data[0], data[2])
-
-    metrics.accuracy_score(data[3], model.predict(data[1]))
+# def model_training_eval(model, xTrain, xTest, yTrain, yTest):
+#     model.fit(xTrain, yTrain)
+#     yHat = model.predict(xTest)
+#     metrics.accuracy_score(y_true=yTest, y_pred=yHat)
     
 
 def main():
     data = pd.read_csv("./Dataset_2023_processed.csv")
 
-    label = data['P_CALC'].copy()
-    data = data.drop(['P_CALC'], axis=1)
-    data = model_selection.train_test_split(data, label, test_size=0.2)
+    label = data['PERCIP'].copy()
+    data = data.drop(['PERCIP'], axis=1)
+    xTrain, xTest, yTrain, yTest = model_selection.train_test_split(data, label, test_size=0.2)
+    model = tree.DecisionTreeRegressor()
+    model.fit(xTrain, yTrain)
+    yHat = model.predict(xTest)
+    meanSquaredError = metrics.mean_squared_error(y_true=yTest, y_pred=yHat)
+    print(meanSquaredError)
+
 
 
 
