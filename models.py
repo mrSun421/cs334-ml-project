@@ -11,9 +11,14 @@ from sklearn import tree, svm, linear_model, model_selection, metrics
 def main():
     data = pd.read_csv("./Dataset_2023_processed.csv")
 
+    # convert the data into numpy arrays to make sure index data doesn't corrupt it
     label = data['PERCIP'].copy()
+    label_np = label.to_numpy()
     data = data.drop(['PERCIP'], axis=1)
-    xTrain, xTest, yTrain, yTest = model_selection.train_test_split(data, label, test_size=0.2)
+    data_np = data.to_numpy()
+
+    xTrain, xTest, yTrain, yTest = model_selection.train_test_split(data_np, label_np, test_size=0.2)
+    # replace with different model to your choice!
     model = tree.DecisionTreeRegressor()
     model.fit(xTrain, yTrain)
     yHat = model.predict(xTest)

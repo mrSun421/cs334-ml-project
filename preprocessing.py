@@ -12,7 +12,6 @@ def main():
     label = data['P_CALC'].copy()
     data = data.drop(columns=['P_CALC'])
 
-    data = data.drop([data.columns[0], data.columns[1]], axis=1)
     data = data.drop(columns=['WBANNO',
                               'UTC_DATE',
                               'UTC_TIME',
@@ -43,7 +42,7 @@ def main():
     data = pd.DataFrame(data_values)
     data.insert(0, "PERCIP", label, True)
 
-    data.to_csv("./Dataset_2023_Processed.csv")
+    data.to_csv("./Dataset_2023_Processed.csv", index=False)
     
 if __name__ == "__main__":
     main()

@@ -18,10 +18,9 @@ def main():
             
 
     filepaths = dataset_dir.glob("**/*.csv")
-    data = pd.concat(map(pd.read_csv, filepaths))
+    data = pd.concat(map(lambda filepath: pd.read_csv(filepath_or_buffer=filepath, index_col=0), filepaths))
 
-
-    data.to_csv("./Dataset_2023.csv")
+    data.to_csv("./Dataset_2023.csv", index=False)
 
 if __name__ == "__main__":
     main()
