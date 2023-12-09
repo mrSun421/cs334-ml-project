@@ -1,110 +1,110 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from sklearn import tree, svm, linear_model, model_selection, metrics, neighbors
+from sklearn import tree, svm, linear_model, model_selection, metrics, neighbors, ensemble
 
 def main():
     data = pd.read_csv("./Dataset_2023_processed.csv")
 
+
     print("Converting Data to Numpy...")
-    # convert the data into numpy arrays to make sure index data doesn't corrupt it
-    # NOTE: data[0] == data['PERCIP'] form earlier because of changes to preprocessing col name lost
     label = data[data.columns[0]].copy()
     label_np = label.to_numpy()
     data = data.drop([data.columns[0]], axis=1)
     data_np = data.to_numpy()
 
+
     print("Splitting to Train-Test Split...")
-    xTrain, xTest, yTrain, yTest = model_selection.train_test_split(
+    x_train, x_test, y_train, y_test = model_selection.train_test_split(
         data_np, label_np, test_size=0.2)
 
-    print("linear regression")
+
+    print("Fitting Multi-variate Linear Regression...")
     model = linear_model.LinearRegression()
-    model = model.fit(xTrain, yTrain)
-    yHat = model.predict(xTest)
-    meanSquaredError = metrics.mean_squared_error(y_true=yTest, y_pred=yHat)
-    r_2 = metrics.r2_score(y_true=yTest, y_pred=yHat)
-    print(f"{r_2}")
+    model = model.fit(x_train, y_train)
+    y_hat = model.predict(x_test)
+    mean_squared_error = metrics.mean_squared_error(y_true=y_test, y_pred=y_hat)
+    r_2 = metrics.r2_score(y_true=y_test, y_pred=y_hat)
+    print(f"Mean Squared Error:{mean_squared_error}")
+    print(f"R^2:{r_2}")
 
 
+    print("Plotting predicted and actual labels....")
+    plt.scatter(np.arange(y_hat.shape[0]), y_hat)
+    plt.show()
+    plt.scatter(np.arange(y_test.shape[0]), y_test)
+    plt.show()
 
-    """
-    model = neighbors.KNeighborsRegressor(n_neighbors=30)
+
     print("Finding Best Hyperparameters for KNN Regressor...")
-    model_search = model_selection.GridSearchCV(estimator=model,
-                                                      param_grid={
-                                                          'n_neighbors':np.arange(1, 3)})
-    model_search = model_search.fit(xTrain, yTrain)
-    print(f"{search.best_params_=}")
-    yHat = model_search.predict(X=xTest)
-    """
+    model = neighbors.KNeighborsRegressor()
+    model_search = model_selection.RandomizedSearchCV(estimator=model,
+                                                      param_distributions={'n_neighbors': np.arange(1, 100),
+                                                                           'p': [1, 2],
+                                                                           'weights': ['uniform', 'distance']})
+    model_search = model_search.fit(x_train, y_train)
+    print(f"Best Parameters: {model_search.best_params_=}")
+    y_hat = model_search.predict(X=x_test)
 
-    """
-    model = model.fit(xTrain, yTrain)
-    yHat = model.predict(xTest)
-    """
 
-    """
     print("Calculating MSE (KNN)...")
-    # Regression task, so MSE is a reasonable choice
-    meanSquaredError = metrics.mean_squared_error(y_true=yTest, y_pred=yHat)
-    print(f"{meanSquaredError}")
+    mean_squared_error  = metrics.mean_squared_error(y_true=y_test, y_pred=y_hat)
+    print(f"Mean Squared Error: {mean_squared_error}")
 
-    model = tree.DecisionTreeRegressor(max_depth=10)
-    """
-    """
-    # replace with different models and parameters to your choice!
+
+    print("plotting predicted and actual labels....")
+    plt.scatter(np.arange(y_hat.shape[0]), y_hat)
+    plt.show()
+    plt.scatter(np.arange(y_test.shape[0]), y_test)
+    plt.show()
+
+
     print("Finding Best Hyperparameters for Decision Tree...")
-    model_search = model_selection.RandomizedSearchCV(estimator=model, param_distributions={
-        "max_depth": np.arange(1, 10), "min_samples_leaf": np.arange(1, 20)})
-    model_search = model_search.fit(xTrain, yTrain)
-    print(f"{search.best_params_=}")
-    yHat = model_search.predict(X=xTest)
-    """
+    model = tree.DecisionTreeRegressor(max_depth=10)
+    model_search = model_selection.RandomizedSearchCV(estimator=model,
+                                                      param_distributions={"max_depth": np.arange(1, 10),
+                                                                           "min_samples_leaf": np.arange(1, 20)})
+    model_search = model_search.fit(x_train, y_train)
+    print(f"Best Parameters: {model_search.best_params_=}")
+    dt_params = model_search.best_params_
+    y_hat = model_search.predict(X=x_test)
 
-    """
-    model = model.fit(xTrain, yTrain)
-    yHat = model.predict(xTest)
-    """
-    """
+
     print("Calculating MSE (DT)...")
     # Regression task, so MSE is a reasonable choice
-    meanSquaredError = metrics.mean_squared_error(y_true=yTest, y_pred=yHat)
-    print(f"{meanSquaredError}")
-    """
-    """
+    mean_squared_error = metrics.mean_squared_error(y_true=y_test, y_pred=y_hat)
+    print(f"Mean Squared Error = {mean_squared_error}")
+
     print("Printing Decision Tree....")
     fig = plt.figure(figsize=(25,20))
-    plot = tree.plot_tree(model)
+    tree.plot_tree(model_search)
     fig.savefig("decistion_tree.png")
-    """
 
-    """
-    print("Finding best Hyperparameters for Logistic Regression....")
-    model = linear_model.LogisticRegression()
-    clf = model_selection.RandomizedSearchCV(estimator=model,
-                                             param_distributions={'penalty':('l2',
-                                                                             'elastinet'),
-                                                                  'fit_intercept':(True, False),
-                                                                  'max_iter':np.arange(100,500)})
-    search = clf.fit(xTrain, yTrain)
-    print(f"{search.best_params_=}")
-    yHat = search.predict(X=xTest)                                                              
-    """
 
-    """
+    print("plotting predicted and actual labels....")
+    plt.scatter(np.arange(y_hat.shape[0]), y_hat)
+    plt.show()
+    plt.scatter(np.arange(y_test.shape[0]), y_test)
+    plt.show()
+
+    print("Training SVR with linear kernel:")
+    x_train_SVR = x_train[:int(x_train.shape[0] * 0.1)][:]
+    y_train_SVR = y_train[:int(y_train.len() * 0.1)][:]
     model = svm.SVR(kernel='linear')
-    model = model.fit(xTrain, yTrain)
-    yHat = model.predict(xTest)
-    meanSquaredError = metrics.mean_squared_error(y_true=yTest, y_pred=yHat)
-    print(f"Linear SVR MSE: {meanSquaredError}")
+    model = model.fit(x_train_SVR, y_train_SVR)
+    y_hat = model.predict(x_test)
+    print("Calculating MSE (SVR Linear):")
+    mean_squared_error = metrics.mean_squared_error(y_true=y_test, y_pred=y_hat)
+    print(f"Linear SVR MSE: {mean_squared_error}")
 
+
+    print("Training SVR with linear kernel...")
     model = svm.SVR(kernel='poly')
-    model = model.fit(xTrain, yTrain)
-    yHat = model.predict(xTest)
-    meanSquaredError = metrics.mean_squared_error(y_true=yTest, y_pred=yHat)
-    print(f"Poly SVR MSE: {meanSquaredError}")
-    """
+    model = model.fit(x_train_SVR, y_train_SVR)
+    y_hat = model.predict(x_test)
+    mean_squared_error = metrics.mean_squared_error(y_true=y_test, y_pred=y_hat)
+    print(f"Poly SVR MSE: {mean_squared_error}")
+
 
     """
     print("Finding Best Hyperparameters for Support Vector Machine...")
@@ -122,6 +122,21 @@ def main():
     meanSquaredError = metrics.mean_squared_error(y_true=yTest, y_pred=yHat)
     print(f"{meanSquaredError}")
     """
+
+    print("Training Random Forest...")
+    model = ensemble.RandomForestRegressor(max_depth=dt_params['max_depth'],
+                                           min_samples_leaf=dt_params['min_samples_leaf'])
+    model = model.fit(x_train, y_train)
+    y_hat = model.predict(x_test)
+    mean_squared_error = metrics.mean_squared_error(y_true=y_test, y_pred=y_hat)
+    print(f"Mean Squared Error:{mean_squared_error}")
+
+
+    print("Plotting predicted and actual labels....")
+    plt.scatter(np.arange(y_hat.shape[0]), y_hat)
+    plt.show()
+    plt.scatter(np.arange(y_test.shape[0]), y_test)
+    plt.show()
 
 if __name__ == "__main__":
     main()
