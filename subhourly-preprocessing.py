@@ -73,7 +73,7 @@ def main():
     data = data.drop(to_drop, axis=1)
     '''
 
-    data.to_csv("./Hourly_Dataset_2023_Processed.csv", index=False)
+    data.to_csv("./Subhourly_Dataset_2023_Processed.csv", index=False)
 
 
 if __name__ == "__main__":
