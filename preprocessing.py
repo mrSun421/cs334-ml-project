@@ -4,11 +4,12 @@ import seaborn as sb
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 def main():
-    data = pd.read_csv("./Dataset_2023.csv")
+    data = pd.read_csv("./Hourly_Dataset_2023.csv")
 
     correlation_cutoff = 0.5
- 
+
     # Use flags to elimiate bad data
     data = data.drop(data[data['SOLARAD_FLAG'] > 0].index)
     data = data.drop(data[data['SOLARAD_MAX_FLAG'] > 0].index)
@@ -66,6 +67,7 @@ def main():
     data = data.dropna()
 
     data.to_csv("./Dataset_2023_Processed.csv", index=False)
+
 
 if __name__ == "__main__":
     main()
