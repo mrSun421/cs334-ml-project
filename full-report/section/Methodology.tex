@@ -47,5 +47,12 @@ We then did a Pearson Correlation Matrix to see which features were correlated.
 \end{figure}
 From the Pearson Correlation Matrix we removed features that were correlated greater than 0.5.
 
+From our data, we can now use it in our models.
+Every model we used was from the \verb|SKLearn| library.
+All the models used were regression models, as we are predicting the level of precipitation.
+For each model, we did hyperparameter tuning, and judged it based on the MSE.
+For hyperparameter tuning, we used the \verb|RandomizedCV| from \verb|SKlearn|.
+This by default uses 5 cross-validation sections.
+To test the efficacy of the model, we split the dataset into an 80-20 split of training-testing.
 
 \end{document}
