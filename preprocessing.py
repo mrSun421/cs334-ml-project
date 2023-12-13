@@ -13,6 +13,16 @@ def main():
     correlation_cutoff = 0.5
     """
 
+    # Date Extraction
+    LCD_data["DATE"] = pd.to_datetime(LCD_data["DATE"])
+    LCD_data["YEAR"] = LCD_data["DATE"].dt.year
+    LCD_data["MONTH"] = LCD_data["DATE"].dt.month
+    LCD_data["DAY"] = LCD_data["DATE"].dt.day
+    LCD_data["HOUR"] = LCD_data["DATE"].dt.hour
+    LCD_data["MINUTE"] = LCD_data["DATE"].dt.minute
+    LCD_data = LCD_data[LCD_data["MINUTE"] == 15]
+    LCD_data = LCD_data.drop(columns=["DATE", "MINUTE"])
+
     """
     # Reduce data size to make training more managable
     data = data.iloc[70000:]
