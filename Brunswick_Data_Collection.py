@@ -36,6 +36,8 @@ def main():
 
     # Drop Flags, Dates, Station Identifiers, and Dummy columns
     hourly_data = hourly_data.drop(columns=['WBANNO',
+                                            'LATITUDE',
+                                            'LONGITUDE',
                                             'LST_DATE',
                                             'LST_TIME',
                                             'CRX_VN',
