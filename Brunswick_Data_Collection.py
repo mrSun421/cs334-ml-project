@@ -10,8 +10,8 @@ def main():
     LCD_data = pd.concat(map(lambda filepath: pd.read_csv(filepath_or_buffer=filepath), filepaths))
     """
     # Drop Station Identifiers and Dummy columns
-    LCD_data = data.drop(LCD_data.columns[np.arange(24, len(data.columns)], axis=1))
-    LCD_data = data.drop(columns=['STATION',
+    LCD_data = LCD_data.drop(LCD_data.columns[np.arange(24, len(LCD_data.columns))]) 
+    LCD_data = LCD_data.drop(columns=['STATION',
                                   'LATITUDE',
                                   'LONGITUDE',
                                   'ELEVATION',
@@ -41,7 +41,6 @@ def main():
     hourly_data = hourly_data.drop(hourly_data[hourly_data['SUR_TEMP_MIN_FLAG'] > 0].index)
 
     # Drop Flags, Dates, Station Identifiers, and Dummy columns
-    hourly_data = data.drop(hourly_data.columns[[0, 1]], axis=1)
     hourly_data = data.drop(columns=['WBANNO',
                                      'UTC_DATE',
                                      'UTC_TIME',
