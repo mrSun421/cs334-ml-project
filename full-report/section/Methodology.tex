@@ -1,5 +1,51 @@
 \documentclass[../report.tex]{subfiles}
 
 \begin{document}
-Methodology text
+We first needed to preprocess our data.
+We first took the quality controlled data, and filtered the data to get rid of bad data.
+Conveniently, packaged with the data, were instructions on certain fields.
+For example, \verb|ST_FLAG| is a field described such that, when the value is greater than 0, an error has occurred in the raw data gathering.
+Similarly, certain numeric fields, such as \verb|P_PRECIP|, an extremely low value is written to the field if it is missing.
+
+Continuing, certain fields are non-numeric, and needed to be removed, such as those fields.
+The fields removed without computation were
+
+\begin{itemize}
+    \item \verb|WBANNO|
+    \item \verb|LST_DATE|
+    \item \verb|LST_TIME|
+    \item \verb|CRX_VN|
+    \item \verb|SUR_TEMP_TYPE|
+    \item \verb|SOLARAD_FLAG|
+    \item \verb|SOLARAD_FLAG|
+    \item \verb|SOLARAD_MAX_FLAG|
+    \item \verb|SOLARAD_MIN_FLAG|
+    \item \verb|SUR_TEMP_FLAG|
+    \item \verb|SUR_TEMP_MAX_FLAG|
+    \item \verb|SUR_TEMP_MIN_FLAG|
+\end{itemize}
+Clearly the flags were removed, as they only gave error information.
+The station name is the same for all pieces of data.
+We removed the local time because we already have UTC time to extract information.
+To extract more features, we converted \verb|UTC_DATE| and \verb|UTC_TIME| to a python \verb|datetime| column labeled \verb|DATE|.
+
+For the LCD dataset, a similar process was followed.
+Labels that were strictly non-numeric were removed.
+Note that LCD dataset took measurements every 20 minutes, so we had to only take every third bit of data.
+\verb|DATE| was created by then rounding the date to the nearest hour.
+We then merged the two datasets by matching the \verb|DATE| columns of the datasets.
+
+After doing so, we then created new features based off of the year, month, day, and hour.
+If there was missing data, for example, a missing precipitation value, we would randomly choose a non-missing value of the same day, month, and hour, but on a different year.
+This is a reasonable assumption that the weather will do similar things on the same date on different years.
+
+We then did a Pearson Correlation Matrix to see which features were correlated.
+\begin{figure}
+    \centering
+
+    \label{fig:pearson_corr}
+\end{figure}
+From the Pearson Correlation Matrix we removed features that were correlated greater than 0.5.
+
+
 \end{document}

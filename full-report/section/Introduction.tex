@@ -6,12 +6,13 @@ From a simple decision of bringing an umbrella, to more complicated decisions of
 Prior studies into predicting rainfall have been successful.
 The studies used models and techniques such as SVMs, Extreme Gradient Boosting, Decision Trees, and LSTMs. \cite*{liyew_machine_2021,barrera-animas_rainfall_2022,rahman_rainfall_2022}
 We planned to use similar models in our study.
-The studies, however, usually only focus on data from a single location.
 
-Our study is using the NOAA quality controlled datasets. \cite*{diamond_us_2013}
-The dataset is split up into monthly, daily, hourly, and sub-hourly datasets.
+Our study is using the NOAA quality controlled datasets \cite*{diamond_us_2013} as well U.S. Local Climatological Data from NOAA\cite*{NOAA_local_1996}.
+The quality controlled dataset is split up into monthly, daily, hourly, and sub-hourly datasets.
 Each dataset collects various atmospheric and earth data from various weather stations across the US.
-Compared to the previous studies, we attempted to predict precipitation values from a variety of locations and air and ground data.
-This is a novel approach, since we are generalizing precipitation to not a single location, but based on many locations.
+Similarly, the USLCD does the same, with more detail, but much more missing data.
+Prior studies into predicting precipitation used only one source of data.
+Our study is unique in attempting to augment the quality controlled datasets with more features.
+We specifically focus on data collected from Brunswick, GA.
 
 \end{document}
