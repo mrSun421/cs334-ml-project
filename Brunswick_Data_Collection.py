@@ -6,7 +6,7 @@ import pandas as pd
 def main():
     dataset_dir = Path("./dataset/Brunswick")
 
-    # Collect LCD Brunswick Data into Single CSV 
+    # Collect LCD Brunswick Data into Single CSV
     filepaths = dataset_dir.glob("**/*.csv")
     LCD_data = pd.concat(map(lambda filepath: pd.read_csv(
         filepath_or_buffer=filepath, index_col=None), filepaths))
@@ -45,11 +45,11 @@ def main():
 
     # Determine Bad Data in Hourly Dataset Based on Flag and -9999
     flagged_indicies = {'SOLARAD': [],
-                       'SOLARAD_MAX': [],
-                       'SOLARAD_MIN': [],
-                       'SUR_TEMP': [],
-                       'SUR_TEMP_MAX': [],
-                       'SUR_TEMP_MIN': []}
+                        'SOLARAD_MAX': [],
+                        'SOLARAD_MIN': [],
+                        'SUR_TEMP': [],
+                        'SUR_TEMP_MAX': [],
+                        'SUR_TEMP_MIN': []}
     """
     flagged_indicies = None
     """
@@ -69,7 +69,6 @@ def main():
     flagged_indicies = np.unique(flagged_indicies)
     """
 
-    
     hourly_data = hourly_data.drop(columns=['SOLARAD_FLAG',
                                             'SOLARAD_MAX_FLAG',
                                             'SOLARAD_MIN_FLAG',
@@ -77,13 +76,12 @@ def main():
                                             'SUR_TEMP_MAX_FLAG',
                                             'SUR_TEMP_MIN_FLAG'])
 
-
     # Date Extraction
     LCD_data["DATE"] = pd.to_datetime(LCD_data["DATE"])
 
     LCD_data["MINUTE"] = LCD_data["DATE"].dt.minute
     LCD_data = LCD_data[LCD_data["MINUTE"] == 15]
-    LCD_data["DATE"].apply(lambda dt: dt.replace(minute=0))
+    LCD_data["DATE"] = LCD_data["DATE"].apply(lambda dt: dt.replace(minute=0))
     LCD_data = LCD_data.drop(columns=["MINUTE"])
 
     hourly_data["UTC_TIME"] = hourly_data["UTC_TIME"].astype(str)
