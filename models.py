@@ -5,7 +5,8 @@ from sklearn import tree, svm, linear_model, model_selection, metrics, neighbors
 
 def main():
     data = pd.read_csv("./Dataset_2023_processed.csv")
-
+    # x true vs y predicted
+    # SGD recommendations early stopping etc
 
     print("Converting Data to Numpy...")
     label = data[data.columns[0]].copy()
@@ -30,14 +31,13 @@ def main():
 
 
     print("Plotting predicted and actual labels....")
-    plt.scatter(np.arange(y_hat.shape[0]), y_hat)
-    plt.show()
-    plt.scatter(np.arange(y_test.shape[0]), y_test)
+    plt.scatter(y_test, y_hat)
     plt.show()
 
 
     print("Finding Best Hyperparameters for KNN Regressor...")
     model = neighbors.KNeighborsRegressor()
+    # Coarse then fine search
     model_search = model_selection.RandomizedSearchCV(estimator=model,
                                                       param_distributions={'n_neighbors': np.arange(1, 100),
                                                                            'p': [1, 2],
@@ -87,6 +87,7 @@ def main():
     plt.scatter(np.arange(y_test.shape[0]), y_test)
     plt.show()
 
+    # Reduce iterations
     print("Training SVR with linear kernel:")
     x_train_SVR = x_train[:int(x_train.shape[0] * 0.1)][:]
     y_train_SVR = y_train[:int(y_train.len() * 0.1)][:]
