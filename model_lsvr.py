@@ -14,16 +14,16 @@ def main():
         data_np, label_np, test_size=0.2)
 
     # Reduce iterations
+    print("Training LinearSVR:")
     x_train_SVR = x_train[:int(x_train.shape[0] * 0.1)][:]
     y_train_SVR = y_train[:int(y_train.shape[0] * 0.1)][:]
-
-    print("Training SVR with linear kernel...")
-    model = svm.SVR(kernel='poly')
+    model = svm.LinearSVR()
     model = model.fit(x_train_SVR, y_train_SVR)
     y_hat = model.predict(x_test)
+    print("Calculating MSE (LinearSVR):")
     mean_squared_error = metrics.mean_squared_error(
         y_true=y_test, y_pred=y_hat)
-    print(f"Poly SVR MSE: {mean_squared_error}")
+    print(f"Linear SVR MSE: {mean_squared_error}")
 
 
 if __name__ == "__main__":
