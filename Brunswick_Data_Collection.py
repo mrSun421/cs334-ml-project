@@ -1,16 +1,15 @@
 from pathlib import Path
+import numpy as np
 import pandas as pd
 
 def main():
     dataset_dir = Path("./dataset/Brunswick")
 
-    """
     # Collect LCD Brunswick Data into Single CSV
     filepaths = dataset_dir.glob("**/*.csv")
     LCD_data = pd.concat(map(lambda filepath: pd.read_csv(filepath_or_buffer=filepath), filepaths))
-    """
     # Drop Station Identifiers and Dummy columns
-    LCD_data = LCD_data.drop(LCD_data.columns[np.arange(24, len(LCD_data.columns))]) 
+    LCD_data = LCD_data.drop(LCD_data.iloc[:, np.arange(24, len(LCD_data.columns))], axis=1) 
     LCD_data = LCD_data.drop(columns=['STATION',
                                   'LATITUDE',
                                   'LONGITUDE',
@@ -41,7 +40,7 @@ def main():
     hourly_data = hourly_data.drop(hourly_data[hourly_data['SUR_TEMP_MIN_FLAG'] > 0].index)
 
     # Drop Flags, Dates, Station Identifiers, and Dummy columns
-    hourly_data = data.drop(columns=['WBANNO',
+    hourly_data = hourly_data.drop(columns=['WBANNO',
                                      'UTC_DATE',
                                      'UTC_TIME',
                                      'CRX_VN',
