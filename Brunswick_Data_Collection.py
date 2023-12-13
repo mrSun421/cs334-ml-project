@@ -80,7 +80,7 @@ def main():
 
     LCD_data["MINUTE"] = LCD_data["DATE"].dt.minute
     LCD_data = LCD_data[LCD_data["MINUTE"] == 15]
-    LCD_data["DATE"] = LCD_data["DATE"].apply(lambda dt: dt.replace(minute=0))
+    LCD_data["DATE"].apply(lambda dt: dt.replace(minute=0))
     LCD_data = LCD_data.drop(columns=["MINUTE"])
 
     hourly_data["UTC_TIME"] = hourly_data["UTC_TIME"].astype(str)
