@@ -67,11 +67,20 @@ def main():
     LCD_data = LCD_data[LCD_data["MINUTE"] == 15]
     LCD_data = LCD_data.drop(columns=["MINUTE"])
 
-
     # Dropping with Seasonal Regularity
-    for index in flagged_indices:
-        hour = 
+    years = []
+    for index in flagged_indicies:
+        hour = data.iloc[index]['HOUR']
+        date = data.iloc[index]['DATE']
+        month = data.iloc[index]['MONTH']
+        year = data.iloc[index]['YEAR']
+        
+        temp_years = years.remove(year)
+        year = np.random.choice(temp_years, 1)
+
+        data.iloc[index] = data[(data['YEAR'] == year) & (data['MONTH'] == month) & (data['DATE'] == date) & (data['HOUR'] == hour)] # What if EVERY year bad data on given MDH?
 
 
+    
 if __name__ == "__main__":
     main()
