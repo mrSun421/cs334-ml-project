@@ -5,9 +5,7 @@ import pandas as pd
 
 def main():
     dataset_dir = Path("./dataset/Brunswick")
-
-    # Collect LCD Brunswick Data into Single CSV
-    filepaths = dataset_dir.glob("**/*.csv")
+# Collect LCD Brunswick Data into Single CSV filepaths = dataset_dir.glob("**/*.csv")
     LCD_data = pd.concat(map(lambda filepath: pd.read_csv(
         filepath_or_buffer=filepath, index_col=None), filepaths))
     # Drop Station Identifiers and Dummy columns
@@ -43,23 +41,39 @@ def main():
     # hourly_data.to_csv("./Dataset_Brunswick_Hourly.csv", index=False)
 
     # Determine Bad Data in Hourly Dataset Based on Flag and -9999
-    flag_list = ['SOLARAD_FLAG',
-                 'SOLARAD_FLAG',
-                 'SOLARAD_MAX_FLAG',
-                 'SOLARAD_MIN_FLAG',
-                 'SUR_TEMP_FLAG',
-                 'SUR_TEMP_MAX_FLAG',
-                 'SUR_TEMP_MIN_FLAG']
-
+    flagged_indicies = {'SOLARAD': [],
+                       'SOLARAD_MAX': [],
+                       'SOLARAD_MIN': [],
+                       'SUR_TEMP': [],
+                       'SUR_TEMP_MAX': [],
+                       'SUR_TEMP_MIN': []}
+    """
     flagged_indicies = None
-    for flag in flag_list:
-        flagged = np.where(hourly_data[flag] > 0)[0]
-        flagged_indicies = flagged if flagged_indicies is None else np.concatenate(
-            [flagged_indicies, flagged])
-
+    """
+    flags = flagged_indicies.keys()
+    for flag in flags:
+        flagged = np.where(hourly_data[flag + '_FLAG'] > 0)[0]
+        temp_dict = {flag: flagged}
+        flagged_indicies.update(temp_dict)
+        # flagged_indicies[flag + '_FLAG'] = flagged
+        """
+        flagged_indicies = flagged if flagged_indicies is None else np.concatenate([flagged_indicies, flagged])
+"""
+    flagged_indicies['P_CALC'] = np.where(hourly_data['P_CALC'] < 0)[0]
+    """
     flagged_indicies = np.concatenate(
         [np.where(hourly_data['P_CALC'] < 0)[0], flagged_indicies])
     flagged_indicies = np.unique(flagged_indicies)
+    """
+
+    
+    hourly_data = hourly_data.drop(columns=['SOLARAD_FLAG',
+                                            'SOLARAD_MAX_FLAG',
+                                            'SOLARAD_MIN_FLAG',
+                                            'SUR_TEMP_FLAG',
+                                            'SUR_TEMP_MAX_FLAG',
+                                            'SUR_TEMP_MIN_FLAG'])
+
 
     # Date Extraction
     LCD_data["DATE"] = pd.to_datetime(LCD_data["DATE"])
@@ -84,21 +98,31 @@ def main():
     full_data["DAY"] = full_data["DATE"].dt.day
     full_data["HOUR"] = full_data["DATE"].dt.hour
 
-    print(full_data)
     # Dropping with Seasonal Regularity
-    years = []
-    for index in flagged_indicies:
-        hour = full_data.iloc[index]['HOUR']
-        date = full_data.iloc[index]['DATE']
-        month = full_data.iloc[index]['MONTH']
-        year = full_data.iloc[index]['YEAR']
+    years = [2017, 2018, 2019, 2020, 2021, 2022, 2023]
+    for feature, indecies in flagged_indicies.items():
+        for index in indecies:
+            hour = full_data.iloc[index]['HOUR']
+            day = full_data.iloc[index]['DAY']
+            month = full_data.iloc[index]['MONTH']
+            year = full_data.iloc[index]['YEAR']
+            print(full_data.iloc[index])
 
-        temp_years = years.remove(year)
-        year = np.random.choice(temp_years, 1)
+            years.remove(year)
 
-        full_data.iloc[index] = full_data[(full_data['YEAR'] == year) & (full_data['MONTH'] == month) & (
-            # What if EVERY year bad data on given MDH?
-            full_data['DATE'] == date) & (full_data['HOUR'] == hour)]
+            temp_year = np.random.choice(years, 1)
+
+            point = full_data.loc[full_data['YEAR'].isin(temp_year) &
+                                  full_data['MONTH'].isin([month]) &
+                                  full_data['DAY'].isin([day]) &
+                                  full_data['HOUR'].isin([hour])]
+            print(feature)
+            print(point[feature])
+            full_data.at[index, feature] = point[feature]
+
+            print(full_data.iloc[index])
+
+            years.append(year)
 
 
 if __name__ == "__main__":
