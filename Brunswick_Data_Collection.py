@@ -24,7 +24,7 @@ def main():
                                       'HourlyWindGustSpeed'])
 
 
-    LCD_data.to_csv("./Dataset_Brunswick_LCD.csv", index=False)
+    # LCD_data.to_csv("./Dataset_Brunswick_LCD.csv", index=False)
 
 
     dataset_dir = Path("./dataset/")
@@ -38,7 +38,36 @@ def main():
                                             'CRX_VN',
                                             'SUR_TEMP_TYPE'])
 
-    hourly_data.to_csv("./Dataset_Brunswick_Hourly.csv", index=False)
+    # hourly_data.to_csv("./Dataset_Brunswick_Hourly.csv", index=False)
+
+    # Determine Bad Data in Hourly Dataset Based on Flag and -9999
+    flag_list = ['SOLARAD_FLAG',
+                 'SOLARAD_FLAG',
+                 'SOLARAD_MAX_FLAG',
+                 'SOLARAD_MIN_FLAG',
+                 'SUR_TEMP_FLAG',
+                 'SUR_TEMP_MAX_FLAG',
+                 'SUR_TEMP_MIN_FLAG']
+
+    flagged_indicies = None
+    for flag in flag_list:
+        flagged = np.where(hourly_data[flag] > 0)[0]
+        flagged_indicies = flagged if flagged_indicies is None else np.concatenate([flagged_indicies, flagged])
+
+    flagged_indicies = np.concatenate([np.where(hourly_data['P_CALC'] < 0)[0], flagged_indicies])
+    flagged_indicies = np.unique(flagged_indicies)
+
+    # Date Extraction
+    LCD_data["DATE"] = pd.to_datetime(LCD_data["DATE"])
+    LCD_data["YEAR"] = LCD_data["DATE"].dt.year
+    LCD_data["MONTH"] = LCD_data["DATE"].dt.month
+    LCD_data["DAY"] = LCD_data["DATE"].dt.day
+    LCD_data["HOUR"] = LCD_data["DATE"].dt.hour
+    LCD_data["MINUTE"] = LCD_data["DATE"].dt.minute
+    LCD_data = LCD_data[LCD_data["MINUTE"] == 15]
+    LCD_data = LCD_data.drop(columns=["MINUTE"])
+
+
 
 if __name__ == "__main__":
     main()
