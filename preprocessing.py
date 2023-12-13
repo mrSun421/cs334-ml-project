@@ -17,7 +17,7 @@ def main():
     LCD_data["HOUR"] = LCD_data["DATE"].dt.hour
     LCD_data["MINUTE"] = LCD_data["DATE"].dt.minute
     LCD_data = LCD_data[LCD_data["MINUTE"] == 15]
-    LCD_data = LCD_data.drop(columns=["DATE", "MINUTE"])
+    LCD_data = LCD_data.drop(columns=["MINUTE"])
 
     """
     # Reduce data size to make training more managable
