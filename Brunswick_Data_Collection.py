@@ -5,9 +5,12 @@ import pandas as pd
 
 def main():
     dataset_dir = Path("./dataset/Brunswick")
-# Collect LCD Brunswick Data into Single CSV filepaths = dataset_dir.glob("**/*.csv")
+
+    # Collect LCD Brunswick Data into Single CSV 
+    filepaths = dataset_dir.glob("**/*.csv")
     LCD_data = pd.concat(map(lambda filepath: pd.read_csv(
         filepath_or_buffer=filepath, index_col=None), filepaths))
+
     # Drop Station Identifiers and Dummy columns
     LCD_data = LCD_data.drop(
         LCD_data.iloc[:, np.arange(24, len(LCD_data.columns))], axis=1)
