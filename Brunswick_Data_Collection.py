@@ -68,7 +68,6 @@ def main():
     LCD_data = LCD_data[LCD_data["MINUTE"] == 15]
     LCD_data = LCD_data.drop(columns=["MINUTE"])
 
-
     hourly_data["UTC_TIME"] = hourly_data["UTC_TIME"].astype(str)
     hourly_data["UTC_TIME"] = hourly_data["UTC_TIME"].map(lambda x: x.zfill(4))
     hourly_data["DATE"] = hourly_data["UTC_DATE"].astype(
@@ -84,6 +83,7 @@ def main():
     full_data["DAY"] = full_data["DATE"].dt.day
     full_data["HOUR"] = full_data["DATE"].dt.hour
 
+    print(full_data)
     # Dropping with Seasonal Regularity
     years = []
     for index in flagged_indicies:
@@ -91,11 +91,14 @@ def main():
         date = full_data.iloc[index]['DATE']
         month = full_data.iloc[index]['MONTH']
         year = full_data.iloc[index]['YEAR']
-        
+
         temp_years = years.remove(year)
         year = np.random.choice(temp_years, 1)
 
-        full_data.iloc[index] = full_data[(full_data['YEAR'] == year) & (full_data['MONTH'] == month) & (full_data['DATE'] == date) & (full_data['HOUR'] == hour)] # What if EVERY year bad data on given MDH?
+        full_data.iloc[index] = full_data[(full_data['YEAR'] == year) & (full_data['MONTH'] == month) & (
+            # What if EVERY year bad data on given MDH?
+            full_data['DATE'] == date) & (full_data['HOUR'] == hour)]
+
 
 if __name__ == "__main__":
     main()
