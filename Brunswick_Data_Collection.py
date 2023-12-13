@@ -33,8 +33,8 @@ def main():
 
     # Drop Flags, Dates, Station Identifiers, and Dummy columns
     hourly_data = hourly_data.drop(columns=['WBANNO',
-                                            'UTC_DATE',
-                                            'UTC_TIME',
+                                            'LST_DATE',
+                                            'LST_TIME',
                                             'CRX_VN',
                                             'SUR_TEMP_TYPE'])
 
@@ -67,6 +67,10 @@ def main():
     LCD_data = LCD_data[LCD_data["MINUTE"] == 15]
     LCD_data = LCD_data.drop(columns=["MINUTE"])
 
+
+    # Dropping with Seasonal Regularity
+    for index in flagged_indices:
+        hour = 
 
 
 if __name__ == "__main__":
