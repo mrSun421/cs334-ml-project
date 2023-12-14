@@ -59,5 +59,12 @@ We took a similar approach with ......
 However, ... was not amenable to such an approach with the time we had for the project. 
 Thus, we just preformed randomized searches over several parameters like .... and .... to speed find intermediary results.
 
+From our data, we can now use it in our models.
+Every model we used was from the \verb|SKLearn| library.
+All the models used were regression models, as we are predicting the level of precipitation.
+For each model, we did hyperparameter tuning, and judged it based on the MSE.
+For hyperparameter tuning, we used the \verb|RandomizedCV| from \verb|SKlearn|.
+This by default uses 5 cross-validation sections.
+To test the efficacy of the model, we split the dataset into an 80-20 split of training-testing.
 
 \end{document}
