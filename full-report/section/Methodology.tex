@@ -36,16 +36,28 @@ Note that LCD dataset took measurements every 20 minutes, so we had to only take
 We then merged the two datasets by matching the \verb|DATE| columns of the datasets.
 
 After doing so, we then created new features based off of the year, month, day, and hour.
-If there was missing data, for example, a missing precipitation value, we would randomly choose a non-missing value of the same day, month, and hour, but on a different year.
-This is a reasonable assumption that the weather will do similar things on the same date on different years.
+If there was missing data, for example, a missing precipitation value, we would randomly choose a non-missing value of the same day, month, and hour, but on a different year following the work of https://ieeexplore-ieee-org.proxy.library.emory.edu/document/9170361. 
+This is due to seasonal regularity where the weather 
 
 We then did a Pearson Correlation Matrix to see which features were correlated.
-\begin{figure}
+\begin{figure}[!ht]
     \centering
 
     \label{fig:pearson_corr}
 \end{figure}
 From the Pearson Correlation Matrix we removed features that were correlated greater than 0.5.
+Then, we normalized our data to ensure all features had similar impact on the label. 
+Additionally, this made the label data easier to handle because it is extremely sparse with large deviations. 
+This also made our selection for loss function slightly more complicated beacuse EXPLAIN DIFFERENCE BETWEEN MAE AND MSE. 
+Alternatively, this could be resolved by assigning the label into buckets for intensity of rain rather than millimeters of ran. 
+Other papersCITE, have found more success using such an approach to overcome the same issue with spare rainfall. 
+Instead, we chose to see if model choice and hyper-parameter tuning could resolve this hurdle. 
+To tune model's hyperparameters, we used grid search and randmoized search. 
+For example, when performing a search for optimal $k$ for our KNN model, we used a large step size to look at the coarse effects of $k$ choice on model accuracy. 
+Then, we performed a small step local search to further optimize $k$. 
+We took a similar approach with ......
+However, ... was not amenable to such an approach with the time we had for the project. 
+Thus, we just preformed randomized searches over several parameters like .... and .... to speed find intermediary results.
 
 
 \end{document}
